@@ -1,0 +1,26 @@
+{{#headContents}}
+    <style>/*TODO*/</style>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+{{/headContents}}
+
+<div class="main">
+    <div class="title">CouchClicker</div>
+    
+    <div class="description">Your one stop for all your streaming needs</div>
+    
+    <div id="g_id_onload"
+     data-client_id="{{clientID}}"
+     data-context="signin"
+     data-ux_mode="popup"
+     data-login_uri="{{authCallback}}"
+     data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin"
+     data-type="standard"
+     data-shape="rectangular"
+     data-theme="outline"
+     data-text="signin_with"
+     data-size="large"
+     data-logo_alignment="left">
+    </div>
+</div>
