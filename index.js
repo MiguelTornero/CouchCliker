@@ -8,7 +8,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const { response } = require('express');
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(clientID);
 const HandleBars = require("express-handlebars").create({
     helpers: {
         headContents(options) {
@@ -29,9 +30,22 @@ app.use("/", express.static("static"));
 
 const authCallback = new URL("/auth/callback", baseURL);
 app.get("/", (req, res)=>{
-    //res.render("home", {name: "world"});
+    console.log(req.cookies);
+    console.log(req.body);
     
     res.render("signin", {authCallback, clientID})
+});
+
+app.post("/auth/callback", async (req, res)=>{
+    console.log(req.cookies);
+    console.log(req.body);
+    const tokens = { cookie: req.cookies.g_csrf_token, body: req.body.g_csrf_token };
+    if (tokens.cookie != tokens.body) {
+        res.sendStatus(400);
+    }
+    const ticket = await client.verifyIdToken({idToken: req.body.credential, audience: clientID});
+    
+    res.json(ticket.getPayload());
 });
 
 app.listen(port, ()=>{
