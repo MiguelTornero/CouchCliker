@@ -1,7 +1,16 @@
 const fs = require("fs").promises;
 const path = require("path");
+const Papa = require("papaparse");
 
 const dir = "./.data";
+
+let movies = null;
+
+fs.readFile("./netflix.csv").then((buff)=>{
+    const csv = buff.toString();
+    movies = Papa.parse(csv,{header: true});
+    console.log(movies);
+}).catch(console.error);
 
 async function save(key, obj) {
     try {
