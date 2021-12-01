@@ -1,6 +1,6 @@
 # CouchClicker
-Final Project for Software Systems Analysis And Modeling  
-Live version at <https://couchclicker.a00820449.ml/>  
+Final Project for Software Systems Analysis And Modeling class 
+Live version at <https://couchclicker.a00820449.ml/> 
 
 ## Team Members
 - Bernardo García Zermeño (A00570682)
