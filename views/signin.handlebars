@@ -25,5 +25,15 @@
      data-size="large"
      data-logo_alignment="left">
     </div>
+
+    <button class="btn btn-outline-success" style="margin: 0.5rem;" onclick="signInAsGuest()">
+        Sign In As Guest
+    </button>
 </div>
 </div>
+<script>
+    function signInAsGuest() {
+        document.cookie = "token=guest;expires=3600000;path=/";
+        window.location.href = "/home";
+    }
+</script>

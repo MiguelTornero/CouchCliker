@@ -17,6 +17,24 @@ const dir = "./.data";
  */
 let movies = null;
 
+const guest_user = {
+    "iss":"https://accounts.google.com",
+    "nbf":0,
+    "aud":null,
+    "sub":"000000000000000000000",
+    "hd":"example.com",
+    "email":"test@example.com",
+    "email_verified":true,
+    "azp":null,
+    "name":"Guest Guest",
+    "picture":null,
+    "given_name":"Guest",
+    "family_name":"Guest",
+    "iat":0,
+    "exp":0,
+    "jti":null
+}
+
 fs.readFile("./netflix.csv").then((buff)=>{
     const csv = buff.toString();
     movies = Papa.parse(csv,{header: true}).data;
@@ -35,6 +53,9 @@ async function save(key, obj) {
 }
 
 async function get(key) {
+    if (key === "guest") {
+        return guest_user;
+    }
     try {
         const output = (await fs.readFile(path.join(dir, `${key}.json`))).toString();
         return JSON.parse(output);
