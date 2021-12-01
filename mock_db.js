@@ -38,7 +38,6 @@ const guest_user = {
 fs.readFile("./netflix.csv").then((buff)=>{
     const csv = buff.toString();
     movies = Papa.parse(csv,{header: true}).data;
-    console.log(movies);
 }).catch(console.error);
 
 async function save(key, obj) {

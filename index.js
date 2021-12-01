@@ -43,9 +43,9 @@ app.get("/home", async(req, res)=>{
     if (!req.cookies?.token) {
         res.redirect("/");
     }
-    const data = await db.get(req.cookies.token);
-    console.log(data);
-    res.render("home", {user: data});
+    const user = await db.get(req.cookies.token);
+
+    res.render("home", {user});
 });
 
 app.get("/search", async(req, res)=>{
@@ -53,12 +53,11 @@ app.get("/search", async(req, res)=>{
         res.redirect("/");
     }
     const user = await db.get(req.cookies.token);
+
     const query = req.query?.query?.toLowerCase() || "";
     const results = await db.searchMovies(query);
-    console.log(results);
+
     res.render("results", {results, user});
-    console.log(results.length, "results for query:", query);
-    console.log(req.query);
 });
 
 app.post("/auth/callback", async (req, res)=>{
