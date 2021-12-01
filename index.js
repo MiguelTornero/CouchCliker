@@ -31,10 +31,9 @@ app.use("/", express.static("static"));
 
 const authCallback = new URL("/auth/callback", baseURL);
 app.get("/", (req, res)=>{
-    console.log(req.cookies);
-    console.log(req.body);
     if (req.cookies?.token) {
         res.redirect("/home");
+        return;
     }
     res.render("signin", {authCallback, clientID})
 });
@@ -42,6 +41,7 @@ app.get("/", (req, res)=>{
 app.get("/home", async(req, res)=>{
     if (!req.cookies?.token) {
         res.redirect("/");
+        return;
     }
     const user = await db.get(req.cookies.token);
 
@@ -51,6 +51,7 @@ app.get("/home", async(req, res)=>{
 app.get("/search", async(req, res)=>{
     if (!req.cookies?.token) {
         res.redirect("/");
+        return;
     }
     const user = await db.get(req.cookies.token);
 
@@ -64,6 +65,7 @@ app.post("/auth/callback", async (req, res)=>{
     const tokens = { cookie: req.cookies.g_csrf_token, body: req.body.g_csrf_token };
     if (tokens.cookie != tokens.body) {
         res.sendStatus(400);
+        return;
     }
     const ticket = await client.verifyIdToken({idToken: req.body.credential, audience: clientID});
 
