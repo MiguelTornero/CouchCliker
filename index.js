@@ -4,6 +4,7 @@ const port = parseInt(process.env.PORT) || 3000;
 const clientID = process.env.GOOGLE_CLIENT_ID || "";
 const baseURL = new URL(process.env.BASE_URL).href;
 
+const db = require("./mock_db.js");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -32,20 +33,32 @@ const authCallback = new URL("/auth/callback", baseURL);
 app.get("/", (req, res)=>{
     console.log(req.cookies);
     console.log(req.body);
-    
+    if (req.cookies?.token) {
+        res.redirect("/home");
+    }
     res.render("signin", {authCallback, clientID})
 });
 
+app.get("/home", async(req, res)=>{
+    if (!req.cookies?.token) {
+        res.redirect("/");
+    }
+    const data = await db.get(req.cookies.token);
+    console.log(data);
+    res.render("home", {user: data});
+});
+
 app.post("/auth/callback", async (req, res)=>{
-    console.log(req.cookies);
-    console.log(req.body);
     const tokens = { cookie: req.cookies.g_csrf_token, body: req.body.g_csrf_token };
     if (tokens.cookie != tokens.body) {
         res.sendStatus(400);
     }
     const ticket = await client.verifyIdToken({idToken: req.body.credential, audience: clientID});
-    
-    res.json(ticket.getPayload());
+
+    const playload = ticket.getPayload();
+    res.cookie("token", playload.sub)
+    await db.save(playload.sub, playload);
+    res.redirect("/home");
 });
 
 app.listen(port, ()=>{

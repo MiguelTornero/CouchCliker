@@ -1,0 +1,17 @@
+<nav style="padding: 0.5rem;" class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
+    CouchClicker
+  </a>
+  <span class="navbar-text">
+    <span style="margin: 0 0.5rem;">Hello, {{user.given_name}}!</span>
+    <button class="btn btn-sm btn-outline-secondary" type="button" id="logout", onclick="logOut()">Log Out</button>
+  </span>
+</nav>
+
+<script>
+    function logOut() {
+        document.cookie = "token=;-1;path=/";
+        window.location.href = "/";
+    }
+</script>

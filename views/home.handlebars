@@ -1,7 +1,9 @@
 {{#headContents}}
-    <style>/*Hello*/</style>
+    <style>/*TODO*/</style>
 {{/headContents}}
 
-<div class="main">
-    <div class="title">Hello, {{name}}</div>
+{{>navbar}}
+<div class="container">
+    <div class="title">Hello, {{user.given_name}}</div>
+    {{>test}}
 </div>
