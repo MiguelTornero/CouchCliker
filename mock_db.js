@@ -4,11 +4,22 @@ const Papa = require("papaparse");
 
 const dir = "./.data";
 
+/**
+ * @type { {
+ * title: string,
+ * rating: string,
+ * ratinglevel: string,
+ * ratingdescription: string,
+ * release_year: string,
+ * user_rating_score: string,
+ * user_rating_size: string
+ * }[] }
+ */
 let movies = null;
 
 fs.readFile("./netflix.csv").then((buff)=>{
     const csv = buff.toString();
-    movies = Papa.parse(csv,{header: true});
+    movies = Papa.parse(csv,{header: true}).data;
     console.log(movies);
 }).catch(console.error);
 
@@ -34,4 +45,14 @@ async function get(key) {
     }
 }
 
-module.exports = {save, get};
+async function searchMovies(query) {
+    let results = [];
+    for (const movie of movies) {
+        if (results.length <= 100 && movie.title.toLowerCase().includes(query)) {
+            results.push(movie);
+        }
+    }
+    return results;
+}
+
+module.exports = {save, get, searchMovies};

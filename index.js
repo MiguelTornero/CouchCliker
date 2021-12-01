@@ -48,6 +48,15 @@ app.get("/home", async(req, res)=>{
     res.render("home", {user: data});
 });
 
+app.get("/search", async(req, res)=>{
+    const query = req.query?.query?.toLowerCase() || "";
+    const results = await db.searchMovies(query);
+    console.log(results);
+    res.render("results", {results});
+    console.log(results.length, "results for query:", query);
+    console.log(req.query);
+});
+
 app.post("/auth/callback", async (req, res)=>{
     const tokens = { cookie: req.cookies.g_csrf_token, body: req.body.g_csrf_token };
     if (tokens.cookie != tokens.body) {
