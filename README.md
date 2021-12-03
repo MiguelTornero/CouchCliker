@@ -5,6 +5,7 @@ Live version at <https://couchclicker.a00820449.ml/>
 ## Instructions
 Clone the repository and run:
 ```
+npm install
 PORT=<port number> GOOGLE_CLIENT_ID=<google client id> BASE_URL=<base url> node index.js
 ```
 (Be sure to have Node/NPM installed)
